@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  app_1:
+    build:
+      context: .
+    command: ./manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app_1
+    ports:
+      - "80:8000"
+    env_file:
+      - service.env
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:11-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - service.env
+
+volumes:
+  pgdata:
