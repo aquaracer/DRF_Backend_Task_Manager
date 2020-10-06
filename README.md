@@ -33,7 +33,7 @@
 
 ### Реализация.
 
-Задание реализовано на Python 3 с использованием фреймворка Django/DjangoRestFramework. В качестве СУБД используется PostgreSQL.
+Задание реализовано на Python 3 с использованием фреймворка Django/DjangoRestFramework. В качестве СУБД используется PostgreSQL. Сервис покрыт тестами посредством Unittest. Для сборки сервиса использвется Docker/Docker-Compose
 
 
 Ниже приведен список эндпоинтов, используемых в сервисе, и их описание
@@ -51,23 +51,33 @@ curl -X POST http://127.0.0.1:8000/auth/users/ --data 'username=djoser&password=
 {"email": "", "username": "djoser", "id":1}
 ```
 
-* /auth/token/login/ - POST
+#### * /auth/token/login/ - POST
+
 представление токена зарегистрированному пользователю по логину и паролю.
 
+
 пример запроса 
+```bash
 curl -X POST http://127.0.0.1:8000/auth/token/login/ --data 'username=djoser&password=alpine12'
+```
 
 пример ответа
+```bash
 {"auth_token": "b704c9fc3655635646356ac2950269f352ea1139"}
+```
 
-* api/tasks/ - GET 
+#### * api/tasks/ - GET 
 список задач  пользователя. обязательным условием является передача токена аутентификации в заголовке запросе
 
 пример запроса:
+
+```bash
 curl -LX GET http://127.0.0.1:8000/api/tasks/ -H 'Authorization: Token b704c9fc3655635646356ac2950269f352ea1139'
+```
 
 пример ответа:
 
+```bash
 [
 {
 "id": 2,
@@ -86,14 +96,19 @@ curl -LX GET http://127.0.0.1:8000/api/tasks/ -H 'Authorization: Token b704c9fc3
 "planned_finish": "2020-10-08"
 }
 ]
+```
 
-* api/tasks/ - POST 
+#### * api/tasks/ - POST 
 добавление задачи пользователя. обязательным условием является передача токена аутентификации в заголовке запроса
 
 пример запроса:
+
+```bash
 curl -X POST http://127.0.0.1:8088/api/tasks/ -H 'Authorization: Token b704c9fc3655635646356ac2950269f352ea1139' —-data ‘name=read&descritpion=Mark Lutz&status=new&planned_finish=2020-10-30’
+```
 
 пример ответа:
+```bash
 {
 "id": 3,
 "name": "read",
@@ -102,14 +117,20 @@ curl -X POST http://127.0.0.1:8088/api/tasks/ -H 'Authorization: Token b704c9fc3
 "status": "new",
 "planned_finish": "2020-10-30"
 }
+```
 
-* api/tasks/<id_задачи> - PUT
+#### * api/tasks/<id_задачи> - PUT
 изменения параметров задачи. обязательным условием является передача токена аутентификации в заголовке запроса.
 
 пример запроса:
+
+```bash
 curl -X PUT http://127.0.0.1:8088/api/tasks/3/ -H 'Authorization: Token b704c9fc3655635646356ac2950269f352ea1139' —-data ‘name=read&descritpion=Mark Lutz.Python 3&status=new&planned_finish=2020-10-29’
+```
 
 пример ответа:
+
+```bash
 {
 "id": 3,
 "name": "read",
@@ -118,15 +139,21 @@ curl -X PUT http://127.0.0.1:8088/api/tasks/3/ -H 'Authorization: Token b704c9fc
 "status": "new",
 "planned_finish": "2020-10-29"
 }
+```
 
-* /api/filtered_tasks/<статус_задачи>/<дата_завершения_задачи>/ - GET
+#### * /api/filtered_tasks/<статус_задачи>/<дата_завершения_задачи>/ - GET
 список задач  пользователя отфильтрованный по дате и статусу. обязательным условием является передача токена аутентификации в заголовке запросе
 
 
 пример запроса:
+
+```bash
 curl -LX GET http://127.0.0.1:8000/api/filtered_tasks/new/2020-10-08/ -H 'Authorization: Token b704c9fc3655635646356ac2950269f352ea1139'
+```
 
 пример ответа:
+
+```bash
 [
 {
 "id": 2,
@@ -145,16 +172,21 @@ curl -LX GET http://127.0.0.1:8000/api/filtered_tasks/new/2020-10-08/ -H 'Author
 "planned_finish": "2020-10-08"
 }
 ]
+```
 
 
-*/api/task_changes/<id_задачи>/ - GET
+#### */api/task_changes/<id_задачи>/ - GET
 список изменений задачи пользователя. обязательным условием является передача токена аутентификации в заголовке запросе
 
 пример запроса:
+
+```bash
 curl -LX GET http://127.0.0.1:8000/api/task_changes/4/ -H 'Authorization: Token b704c9fc3655635646356ac2950269f352ea1139'
+```
 
 пример ответа:
 
+```bash
 [
 {
 "changed_task": 4,
@@ -180,5 +212,5 @@ curl -LX GET http://127.0.0.1:8000/api/task_changes/4/ -H 'Authorization: Token 
 ]
 }
 ]
-
+```
 
