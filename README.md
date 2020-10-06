@@ -42,10 +42,14 @@
 регистрация пользователя
 
 пример запроса 
+```bash
 curl -X POST http://127.0.0.1:8000/auth/users/ --data 'username=djoser&password=alpine12'
+```
 
 пример ответа
+```bash
 {"email": "", "username": "djoser", "id":1}
+```
 
 * /auth/token/login/ - POST
 представление токена зарегистрированному пользователю по логину и паролю.
