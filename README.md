@@ -104,7 +104,7 @@ curl -LX GET http://127.0.0.1:8000/api/tasks/ -H 'Authorization: Token b704c9fc3
 пример запроса:
 
 ```bash
-curl -X POST http://127.0.0.1:8088/api/tasks/ -H 'Authorization: Token b704c9fc3655635646356ac2950269f352ea1139' —-data ‘name=read&descritpion=Mark Lutz&status=new&planned_finish=2020-10-30’
+curl -X POST http://127.0.0.1:8000/api/tasks/ -H 'Authorization: Token b704c9fc3655635646356ac2950269f352ea1139' —-data ‘name=read&descritpion=Mark Lutz&status=new&planned_finish=2020-10-30’
 ```
 
 пример ответа:
@@ -125,7 +125,7 @@ curl -X POST http://127.0.0.1:8088/api/tasks/ -H 'Authorization: Token b704c9fc3
 пример запроса:
 
 ```bash
-curl -X PUT http://127.0.0.1:8088/api/tasks/3/ -H 'Authorization: Token b704c9fc3655635646356ac2950269f352ea1139' —-data ‘name=read&descritpion=Mark Lutz.Python 3&status=new&planned_finish=2020-10-29’
+curl -X PUT http://127.0.0.1:8000/api/tasks/3/ -H 'Authorization: Token b704c9fc3655635646356ac2950269f352ea1139' —-data ‘name=read&descritpion=Mark Lutz.Python 3&status=new&planned_finish=2020-10-29’
 ```
 
 пример ответа:
