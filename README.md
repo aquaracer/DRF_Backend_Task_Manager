@@ -214,3 +214,7 @@ curl -LX GET http://127.0.0.1:8000/api/task_changes/4/ -H 'Authorization: Token 
 ]
 ```
 
+#### Запуск тестов
+```bash
+python manage.py test
+```
