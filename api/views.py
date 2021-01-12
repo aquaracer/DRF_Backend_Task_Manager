@@ -5,23 +5,19 @@ from .serializers import TasksSerializer, Filtered_TasksSerializer, TaskChangesS
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
-#from rest_framework.generics import
+
 
 class TasksViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    queryset = Tasks.objects.all()
     serializer_class = TasksSerializer
 
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     return Tasks.objects.all().filter(user=user)
-
-
-        #return Tasks.objects.filter(user=user)
+    def get_queryset(self):
+        user = self.request.user
+        return Tasks.objects.all().filter(user=user)
 
 
 class FilteredTasksView(APIView):
-    #permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, status=None, planned_finish=None):
         data = {'status': status, 'planned_finish': planned_finish}
@@ -35,10 +31,10 @@ class FilteredTasksView(APIView):
 
 
 class TaskChangesView(APIView):
-    #permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, task_id):
-        #get_object_or_404(Tasks, id=task_id, user=request.user)
+        get_object_or_404(Tasks, id=task_id, user=request.user)
         changes = TaskChanges.objects.filter(changed_task=task_id).order_by('change_created').all()
         serializer = TaskChangesSerializer(changes, many=True, context={'request': request})
         return Response(serializer.data)
