@@ -1,8 +1,8 @@
+import os
+
 from rest_framework import status
-import unittest
-import requests
+import unittest, requests
 from django.contrib.auth.models import User
-import DRF_task_manager.secret
 
 
 class TestBasic(unittest.TestCase):
@@ -18,9 +18,7 @@ class TestBasic(unittest.TestCase):
         self.task_list_url = f'{self.domain}/api/tasks/'
         self.filtered_task_list_url = f'{self.domain}/api/filtered_tasks/'
         self.task_changes_list_url = f'{self.domain}/api/task_changes/'
-
-        self.credentials = DRF_task_manager.secret.test_credentials
-
+        self.credentials = os.getenv('TEST_CREDENTIALS')
         token = self.get_json(url=self.login_url, json=self.credentials)
         self.token = token['auth_token']
 

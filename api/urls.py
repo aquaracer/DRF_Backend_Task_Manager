@@ -11,3 +11,7 @@ urlpatterns = [
     path('filtered_tasks/<str:status>/<str:planned_finish>/', FilteredTasksView.as_view(),
          name='filtered_tasks'),
 ]
+
+urlpatterns += [
+    path('api-auth/', include('rest_framework.urls')),
+]
