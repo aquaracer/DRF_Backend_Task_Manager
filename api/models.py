@@ -4,14 +4,9 @@ from django.core import validators
 from datetime import date
 
 
-class Fields(models.Model):
-    name = models.CharField(max_length=30, unique=True, verbose_name='Название поля')
-
-    def __str__(self):
-        return self.name
-
-
 class Tasks(models.Model):
+    """Задачи"""
+
     STATUSES = (
         ('new', 'NEW'),
         ('planned', 'PLANNED'),
@@ -27,8 +22,13 @@ class Tasks(models.Model):
                                       validators=[validators.MinValueValidator(date.today())])
     user = models.ForeignKey(User, verbose_name="Пользователь", on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
 
 class TaskChanges(models.Model):
+    """Изменения в задаче"""
+
     STATUSES = (
         ('new', 'NEW'),
         ('planned', 'PLANNED'),
@@ -42,5 +42,7 @@ class TaskChanges(models.Model):
     task_planned_finish = models.DateField("Планируемая дата завершения",
                                            validators=[validators.MinValueValidator(date.today())])
     change_created = models.DateTimeField("Дата и время изменения задачи", auto_now_add=True)
-    changed_fields = models.ManyToManyField(Fields, verbose_name='Измененные поля')
     changed_task = models.ForeignKey(Tasks, verbose_name="Задача", on_delete=models.CASCADE, related_name='task_change')
+
+    def __str__(self):
+        return self.task_name
