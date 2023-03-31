@@ -6,7 +6,6 @@ from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.shortcuts import render
 from rest_framework.exceptions import AuthenticationFailed
-# from datetime import datetime
 import datetime
 
 from core.services import check_google_auth
@@ -132,38 +131,6 @@ class SubtaskViewSet(ModelViewSet):
             return SubtaskSerializer
 
 
-@method_decorator(name='create',
-                  decorator=swagger_auto_schema(
-                      tags=['notification'],
-                      operation_description='Создание уведомления'))
-@method_decorator(name='partial_update',
-                  decorator=swagger_auto_schema(
-                      tags=['notification'],
-                      operation_description='Изменение уведомления', ))
-@method_decorator(name='destroy',
-                  decorator=swagger_auto_schema(
-                      tags=['notification'],
-                      operation_description='Удаление уведомления', ))
-class NotificationViewSet(ModelViewSet):
-    """CRUD Уведомления"""
-
-    def get_queryset(self):
-        return Notification.objects.all()
-
-    def get_serializer_class(self):
-        if self.action == 'create':
-            return CreateNotificationSerializer
-        elif self.action == 'partial_update':
-            return UpdateNotificationSerializer
-        else:
-            return NotificationSerializer
-
-
-def google_login(request):
-    """ Страница входа через Google"""
-    return render(request, 'oauth/google_login.html')
-
-
 @api_view(["POST"])
 def google_auth(request):
     """ Подтверждение авторизации через Google"""
@@ -174,11 +141,3 @@ def google_auth(request):
         return Response(token)
     else:
         raise AuthenticationFailed(code=403, detail='Bad token Google')
-
-
-@swagger_auto_schema(method='GET', tags=['core'])
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def connect_receipt_suborder(request):
-    send_push.delay(None, None, 13)
-    return Response()
