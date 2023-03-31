@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <meta name="google-signin-client_id"
+          content="{{ GOOGLE_CLIENT_ID }}">
+</head>
+<body>
+<input id="HOST" value="{{ HOST }}" type="hidden"/>
+<div id="my-signin"></div>
+
+
+<script>
+
+    function onSuccess(googleUser) {
+        let hiddenInputHost = document.getElementById("HOST");
+        let host = hiddenInputHost.value;
+        let profile = googleUser.getBasicProfile()
+        console.log('Email: ' + profile.getEmail())
+        let token = googleUser.getAuthResponse().id_token
+        console.log('Token: ' + token)
+
+        fetch('http://${host}/api/v1/google_auth/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json;charset=UTF-8'},
+            body: JSON.stringify({
+                email: profile.getEmail(),
+                token: token
+            })
+        })
+            .then(res => res.json())
+            .then(data => console.log('ID: ' + data.user_id + '\nToken: ' + data.access_token))
+    }
+
+    function onFailure(error) {
+        console.log(error)
+    }
+
+    function renderButton() {
+        gapi.signin2.render('my-signin', {
+            'scope': 'profile email',
+            'width': 240,
+            'height': 50,
+            'longtitle': true,
+            'theme': 'dark',
+            'onsuccess': onSuccess,
+            'onfailure': onFailure
+        });
+    }
+</script>
+
+
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+</body>
+</html>
