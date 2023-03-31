@@ -15,7 +15,7 @@ class SubtaskSerializer(serializers.ModelSerializer):
 
 
 class CreateSubtaskSerializer(serializers.ModelSerializer):
-    """Создать подзадачу"""
+    """Создание подзадачи"""
 
     class Meta:
         model = Subtask
@@ -79,11 +79,10 @@ class UpdateTaskSerializer(serializers.ModelSerializer):
         exclude = ('user', 'created', 'last_updated',)
 
     def update(self, instance, validated_data):
-        # если обновляем имя в задаче, то и обновляем и имя в уведомлении
+     
         if validated_data.get('name') and validated_data.get('name') != instance.name:
             Notification.objects.filter(task=instance).update(name=validated_data.get('name'))
 
-        # если обновился статус
         if validated_data.get('status') and validated_data.get('status') != instance.status:
             TaskLog.objects.create(task=instance, status=instance.status)
 
@@ -92,7 +91,6 @@ class UpdateTaskSerializer(serializers.ModelSerializer):
 
 
 class GoogleAuthSerializer(serializers.Serializer):
-    """ Сериализация данных от Google
-    """
+    """ Сериализация данных от Google"""
     email = serializers.EmailField()
     token = serializers.CharField()
