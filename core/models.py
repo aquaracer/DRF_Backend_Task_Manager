@@ -5,19 +5,9 @@ from django_celery_results.models import TaskResult
 from datetime import datetime
 
 
-class AbstarctBaseModel(models.Model):
-    # Поля
-    created = models.DateTimeField(auto_now_add=True, editable=True)
-    last_updated = models.DateTimeField(auto_now=True, editable=False)
-
-    class Meta:
-        abstract = True
-
-
 class User(AbstractUser):
     """Пользователь"""
 
-    # Поля
     username = models.EmailField(verbose_name='Логин', max_length=255, unique=True)
     middle_name = models.CharField(verbose_name='Отчество', max_length=150, blank=True, null=True)
 
@@ -40,11 +30,9 @@ class Profile(AbstarctBaseModel):
         (W, 'Женский')
     )
 
-    # Отношения
     user = models.OneToOneField(User, verbose_name='Пользователь', on_delete=models.CASCADE, default='',
                                 null=True, blank=True)
 
-    # Поля
     date_of_birth = models.DateField(verbose_name='Дата рождения', null=True, blank=True)
     sex = models.CharField(verbose_name='Пол', choices=SEX, max_length=30, default=M, blank=True)
     company = models.CharField(verbose_name='Компания', max_length=300, blank=True, null=True)
@@ -99,11 +87,9 @@ class Task(AbstarctBaseModel):
         (HIGH, 'Высокий'),
     )
 
-    # Отношения
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE, null=True)
     category = models.ForeignKey(Category, verbose_name='Категория', on_delete=models.CASCADE, null=True)
 
-    # Поля
     name = models.CharField(verbose_name='Название', max_length=300, blank=True, null=True)
     description = models.CharField(verbose_name='Описание', max_length=300, blank=True, null=True)
     status = models.CharField(verbose_name='Статус', choices=STATUS, max_length=30, default=LOW, blank=True)
@@ -121,10 +107,8 @@ class Task(AbstarctBaseModel):
 class Subtask(AbstarctBaseModel):
     """Подзадача"""
 
-    # Отношения
     task = models.ForeignKey(Task, verbose_name='Задача', on_delete=models.CASCADE, null=True)
 
-    # Поля
     name = models.CharField(verbose_name='Название', max_length=300, blank=True, null=True)
     status = models.CharField(verbose_name='Статус', choices=Task.STATUS, max_length=30, default=Task.IN_PROGRESS,
                               blank=True)
@@ -140,10 +124,8 @@ class Subtask(AbstarctBaseModel):
 class TaskLog(AbstarctBaseModel):
     """История изменений задачи"""
 
-    # Оношения
     task = models.ForeignKey(Task, verbose_name='Задача', on_delete=models.CASCADE, null=True)
 
-    # Поля
     status = models.CharField(verbose_name='Статус', choices=Task.STATUS, max_length=30, default=Task.IN_PROGRESS,
                               blank=True)
 
@@ -158,10 +140,8 @@ class TaskLog(AbstarctBaseModel):
 class TaskTemplate(AbstarctBaseModel):
     """Шаблон задачи"""
 
-    # Отношения
     category = models.ForeignKey(Category, verbose_name='Категория', on_delete=models.CASCADE, null=True)
 
-    # Поля
     name = models.CharField(verbose_name='Название', max_length=300, blank=True, null=True)
     is_popular = models.BooleanField(verbose_name='Популярная задача', default=False)
 
