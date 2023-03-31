@@ -12,6 +12,5 @@ router.register('subtask', api_view.SubtaskViewSet, basename='Subtask')
 urlpatterns = router.urls
 
 urlpatterns += [
-    path('connect_receipt_suborder', views.connect_receipt_suborder),
     path('google_auth/', api_view.google_auth),
 ]
