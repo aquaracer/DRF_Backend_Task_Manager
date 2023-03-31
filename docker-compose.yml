@@ -1,25 +1,60 @@
 version: "3"
 
 services:
-  app_1:
+  api:
     build:
       context: .
-    command: ./manage.py runserver 0.0.0.0:8000
+    command: >
+      bash -c "python manage.py makemigrations
+      && python manage.py migrate
+      && python manage.py runserver 0.0.0.0:8000"
     volumes:
-      - .:/app_1
+      - .:/core
     ports:
       - "80:8000"
     env_file:
-      - service.env
+      - .env
     depends_on:
       - postgres
 
+
   postgres:
-    image: postgres:11-alpine
+    image: postgres:13-alpine
     volumes:
       - pgdata:/var/lib/postgresql/data
     env_file:
-      - service.env
+      - .env
+
+  rabbitmq:
+    container_name: rabbit-server3
+    hostname: rabbit-server3
+    image: rabbitmq:latest
+    ports:
+      - "5672:5672"
+    restart: on-failure
+
+  celery:
+    build: .
+#    command: celery -A notifications worker -l info -Q send_push
+    command: celery -A notifications worker --beat --scheduler django --loglevel=info -Q send_push
+    volumes:
+      - .:/core
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
+    restart: on-failure
+#
+#  redis:
+#    restart: unless-stopped
+#    image: redis:7.0.5-alpine
+#    container_name : redis
+#    expose:
+#      - 6379
 
 volumes:
   pgdata:
+
+
