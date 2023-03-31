@@ -10,8 +10,8 @@ from .serializers import GoogleAuthSerializer
 
 
 def create_token(user_id: int) -> dict:
-    """ Создание токена
-    """
+    """ Создание токена"""
+    
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     return {
         'user_id': user_id,
@@ -23,8 +23,8 @@ def create_token(user_id: int) -> dict:
 
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
-    """ Создание access token
-    """
+    """ Создание access token """
+    
     to_encode = data.copy()
     if expires_delta is not None:
         expire = datetime.utcnow() + expires_delta
