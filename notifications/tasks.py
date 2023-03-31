@@ -1,13 +1,8 @@
-import os, requests, json, logging
-from django.shortcuts import get_object_or_404
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.cache import cache
-from django_celery_results.models import TaskResult
+import os, requests, json
 
 from .celery import app
 from .models import Notification
 
-# logger = logging.getLogger('__name__')
 
 @app.task(
     bind=True,
