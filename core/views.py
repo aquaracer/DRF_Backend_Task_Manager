@@ -11,4 +11,3 @@ def google_login(request):
             'HOST': os.getenv('HOST')
         }
     )
-

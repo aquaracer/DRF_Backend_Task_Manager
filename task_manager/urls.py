@@ -9,7 +9,8 @@ from notifications import views as notifications_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('core/v1/', include('core.urls')),
-    path('core/v1/notifications', include('notifications.urls')),
+    path('core/v1/notifications/', include('notifications.urls')),
+    path('core/v1/chat/', include('chat.urls')),
     path('google_login/', views.google_login),
     path('main/', notifications_views.index),
     path('firebase-messaging-sw.js', notifications_views.showFirebaseJS, name="show_firebase_js"),

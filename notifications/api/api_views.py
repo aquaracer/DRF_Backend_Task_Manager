@@ -1,8 +1,7 @@
-from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from django.utils.decorators import method_decorator
 from rest_framework.viewsets import ModelViewSet
-
+from rest_framework.permissions import IsAuthenticated
 
 from notifications.serializers import NotificationSerializer, CreateNotificationSerializer, UpdateNotificationSerializer
 from notifications.models import Notification
@@ -23,8 +22,10 @@ from task_manager.swagger_schema import TOKENS_PARAMETER
 class NotificationViewSet(ModelViewSet):
     """CRUD Уведомления"""
 
+    permission_classes = [IsAuthenticated, ]
+
     def get_queryset(self):
-        return Notification.objects.all()
+        return Notification.objects.filter(user=self.request.user)
 
     def get_serializer_class(self):
         if self.action == 'create':

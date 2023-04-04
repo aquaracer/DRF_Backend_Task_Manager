@@ -1,7 +1,7 @@
 from rest_framework.routers import DefaultRouter
-from core.api import api_view
+from core.api import api_views
 
 router = DefaultRouter()
-router.register('notification', api_view.NotificationViewSet, basename='Task')
+router.register('', api_views.NotificationViewSet, basename='Notification')
 
 urlpatterns = router.urls

@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -44,8 +44,10 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'rest_framework',
     'drf_yasg',
+    'channels',
     'core',
     'notifications',
+    'chat'
 ]
 
 
@@ -90,6 +92,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'task_manager.wsgi.application'
+ASGI_APPLICATION = 'task_manager.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -162,3 +174,5 @@ CORS_ALLOWED_ORIGINS = [
 
 ALGORITHM = 'HS256'
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
+
+DJANGO_CHANNELS_REST_API = {}
