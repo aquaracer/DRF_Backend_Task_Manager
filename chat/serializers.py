@@ -1,7 +1,8 @@
-from .models import Room, Message
-from core.models import User
 from rest_framework import serializers
 from datetime import datetime
+
+from .models import Room, Message
+from core.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):

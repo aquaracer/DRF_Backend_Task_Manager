@@ -4,7 +4,4 @@ from .models import Room
 
 def room(request, pk):
     room: Room = get_object_or_404(Room, pk=pk)
-    return render(request, 'chat/room.html', {
-        "room": room,
-    })
-
+    return render(request, 'chat/room.html', {"room": room, })

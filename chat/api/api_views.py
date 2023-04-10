@@ -10,11 +10,10 @@ from chat.models import Room
 from chat.serializers import CreateRoomSerializer
 
 
-@method_decorator(name='create',
-                  decorator=swagger_auto_schema(
-                      tags=['room'],
-                      operation_description='Получение списка загруженных через реестр исполнителей',
-                      **TOKENS_PARAMETER))
+@method_decorator(
+    name='create',
+    decorator=swagger_auto_schema(tags=['room'], operation_description='Получение списка загруженных через реестр исполнителей', **TOKENS_PARAMETER)
+)
 class CreateRoomViewSet(GenericViewSet, CreateModelMixin):
     """Создание чат-комнаты"""
 
@@ -27,4 +26,3 @@ class CreateRoomViewSet(GenericViewSet, CreateModelMixin):
             name=f'chat {self.request.user.username}-support {datetime.utcnow()}',
             host=self.request.user
         )
-

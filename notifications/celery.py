@@ -18,9 +18,3 @@ app.conf.update(
 
 app.autodiscover_tasks()
 
-# app.conf.beat_schedule = {
-#     'update_exchange_rates': {
-#         'task': 'finance.tasks.update_exchange_rates',
-#         'schedule': crontab(hour=12, minute=30),
-#     },
-# }

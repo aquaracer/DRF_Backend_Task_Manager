@@ -1,40 +1,47 @@
+import datetime
 from rest_framework.response import Response
-from drf_yasg.utils import swagger_auto_schema
-from django.utils.decorators import method_decorator
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from django.shortcuts import render
 from rest_framework.exceptions import AuthenticationFailed
-import datetime
+from drf_yasg.utils import swagger_auto_schema
+from django.utils.decorators import method_decorator
 
 from core.services import check_google_auth
-from core.serializers import TaskSerializer, CreateTaskSerializer, UpdateTaskSerializer, SubtaskSerializer, \
-    CreateSubtaskSerializer, GoogleAuthSerializer
+from core.serializers import (
+    TaskSerializer,
+    CreateTaskSerializer,
+    UpdateTaskSerializer,
+    SubtaskSerializer,
+    CreateSubtaskSerializer,
+    GoogleAuthSerializer
+)
 from core.models import Task, Subtask
-from notifications.tasks import send_push
 from task_manager.swagger_schema import TOKENS_PARAMETER
 
 
-@method_decorator(name='create',
-                  decorator=swagger_auto_schema(tags=['task'], **TOKENS_PARAMETER,
-                                                operation_description='Создание задачи'))
-@method_decorator(name='list',
-                  decorator=swagger_auto_schema(
-                      tags=['task'],
-                      operation_description='Cписок задач', **TOKENS_PARAMETER))
-@method_decorator(name='retrieve',
-                  decorator=swagger_auto_schema(
-                      tags=['task'],
-                      operation_description='Информация об отдельной задаче', **TOKENS_PARAMETER))
-@method_decorator(name='partial_update',
-                  decorator=swagger_auto_schema(
-                      tags=['task'],
-                      operation_description='Изменение информации о задаче', **TOKENS_PARAMETER))
-@method_decorator(name='destroy',
-                  decorator=swagger_auto_schema(
-                      tags=['task'],
-                      operation_description='Удаление задачи', **TOKENS_PARAMETER))
+@method_decorator(
+    name='create',
+    decorator=swagger_auto_schema(tags=['task'], operation_description='Создание задачи', **TOKENS_PARAMETER)
+)
+@method_decorator(
+    name='list',
+    decorator=swagger_auto_schema(tags=['task'], operation_description='Cписок задач', **TOKENS_PARAMETER)
+)
+@method_decorator(
+    name='retrieve',
+    decorator=swagger_auto_schema(tags=['task'], operation_description='Информация об отдельной задаче',
+                                  **TOKENS_PARAMETER)
+)
+@method_decorator(
+    name='partial_update',
+    decorator=swagger_auto_schema(tags=['task'], operation_description='Изменение информации о задаче',
+                                  **TOKENS_PARAMETER)
+)
+@method_decorator(
+    name='destroy',
+    decorator=swagger_auto_schema(tags=['task'], operation_description='Удаление задачи', **TOKENS_PARAMETER)
+)
 class TaskViewSet(ModelViewSet):
     """CRUD задачи"""
 
@@ -55,8 +62,7 @@ class TaskViewSet(ModelViewSet):
         elif self.action == 'partial_update':
             return UpdateTaskSerializer
 
-    @swagger_auto_schema(method='GET', tags=['Task'],
-                         serializer_class=TaskSerializer, **TOKENS_PARAMETER)
+    @swagger_auto_schema(method='GET', tags=['Task'], serializer_class=TaskSerializer, **TOKENS_PARAMETER)
     @action(detail=False, methods=['GET'])
     def task_diary(self, request):
         """Дневник задач"""
@@ -104,18 +110,18 @@ class TaskViewSet(ModelViewSet):
         return Response()
 
 
-@method_decorator(name='create',
-                  decorator=swagger_auto_schema(
-                      tags=['subtask'],
-                      operation_description='Создание подзадачи', **TOKENS_PARAMETER))
-@method_decorator(name='partial_update',
-                  decorator=swagger_auto_schema(
-                      tags=['subtask'],
-                      operation_description='Изменение информации о подзадаче', **TOKENS_PARAMETER))
-@method_decorator(name='destroy',
-                  decorator=swagger_auto_schema(
-                      tags=['subtask'],
-                      operation_description='Удаление подзадачи', **TOKENS_PARAMETER))
+@method_decorator(
+    name='create',
+    decorator=swagger_auto_schema(tags=['subtask'], operation_description='Создание подзадачи', **TOKENS_PARAMETER)
+)
+@method_decorator(
+    name='partial_update',
+    decorator=swagger_auto_schema( tags=['subtask'], operation_description='Изменение информации о подзадаче', **TOKENS_PARAMETER)
+)
+@method_decorator(
+    name='destroy',
+    decorator=swagger_auto_schema(tags=['subtask'], operation_description='Удаление подзадачи', **TOKENS_PARAMETER)
+)
 class SubtaskViewSet(ModelViewSet):
     """CRUD подзадачи"""
 
