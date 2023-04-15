@@ -1,5 +1,5 @@
-from rest_framework import serializers
 from datetime import datetime
+from rest_framework import serializers
 
 from .models import Room, Message
 from core.models import User
@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "username", "email", "password"]
+        fields = ["id", "username", "email", "password",]
         extra_kwargs = {'password': {'write_only': True}}
 
 
@@ -48,9 +48,9 @@ class RoomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Room
-        fields = ["pk", "name", "host", "messages", "current_users", "last_message"]
+        fields = ["pk", "name", "host", "messages", "current_users", "last_message",]
         depth = 1
-        read_only_fields = ["messages", "last_message"]
+        read_only_fields = ["messages", "last_message",]
 
     def get_last_message(self, obj: Room):
         return MessageSerializer(obj.messages.order_by('created_at').last()).data

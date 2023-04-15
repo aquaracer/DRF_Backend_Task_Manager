@@ -8,14 +8,14 @@ from .models import Notification
     bind=True,
     soft_time_limit=os.getenv('CELERY_TASK_TIMEOUT', 300),
     default_retry_delay=os.getenv('CELERY_TASK_RETRY_TIME', 30),
-    queue='send_push'
+    queue='send_push',
 )
 def send_push(self, message_body=None, fca_token=None, notification_id=None):
-    """Отправка PUSH уведомления пользователю"""
+    """Отправка PUSH-уведомления пользователю"""
 
     headers = {
         "Content-Type": "application/json",
-        "Authorization": 'key=' + os.getenv('FIREBASE_API_KEY')
+        "Authorization": 'key=' + os.getenv('FIREBASE_API_KEY'),
     }
     payload = {
         "registration_ids": fca_token,
@@ -23,7 +23,7 @@ def send_push(self, message_body=None, fca_token=None, notification_id=None):
         "notification": {
             "title": "TASK NOTIFICATION",
             "body": message_body,
-        }
+        },
     }
 
     error_message = None
@@ -43,10 +43,10 @@ def send_push(self, message_body=None, fca_token=None, notification_id=None):
     if error_message is not None:
         Notification.objects.filter(id=notification_id).update(
             status=Notification.ERROR,
-            error_text=error_message
+            error_text=error_message,
         )
     else:
         Notification.objects.filter(id=notification_id).update(
             status=Notification.COMPLETED,
-            task_result_id=self.request.id
+            task_result_id=self.request.id,
         )

@@ -1,30 +1,31 @@
-from rest_framework.exceptions import AuthenticationFailed
-from django.conf import settings
+import jwt
 from datetime import timedelta, datetime
+from django.conf import settings
 from google.oauth2 import id_token
 from google.auth.transport import requests
-import jwt
+from rest_framework.exceptions import AuthenticationFailed
 
 from .models import User
 from .serializers import GoogleAuthSerializer
 
 
 def create_token(user_id: int) -> dict:
-    """ Создание токена"""
-    
+    """Создание токена"""
+
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     return {
         'user_id': user_id,
         'access_token': create_access_token(
-            data={'user_id': user_id}, expires_delta=access_token_expires
+            data={'user_id': user_id},
+            expires_delta=access_token_expires,
         ),
-        'token_type': 'Token'
+        'token_type': 'Token',
     }
 
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
-    """ Создание access token """
-    
+    """Создание access token"""
+
     to_encode = data.copy()
     if expires_delta is not None:
         expire = datetime.utcnow() + expires_delta
@@ -34,7 +35,10 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
 
+
 def check_google_auth(google_user: GoogleAuthSerializer) -> dict:
+    """Проверка аутентификации в Google"""
+
     try:
         id_token.verify_oauth2_token(
             google_user['token'], requests.Request(), settings.GOOGLE_CLIENT_ID

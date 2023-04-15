@@ -7,7 +7,7 @@ TOKENS_PARAMETER = {
             openapi.IN_HEADER,
             type=openapi.TYPE_STRING,
             required=True,
-            description='Access Token(формат: Token + " token")'
+            description='Access Token(формат: Token + " token")',
         ),
     ],
 }

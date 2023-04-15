@@ -1,8 +1,8 @@
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django_celery_results.models import TaskResult
 
-from datetime import datetime
+from common.models import AbstarctBaseModel
 
 
 class User(AbstractUser):
@@ -30,8 +30,14 @@ class Profile(AbstarctBaseModel):
         (W, 'Женский')
     )
 
-    user = models.OneToOneField(User, verbose_name='Пользователь', on_delete=models.CASCADE, default='',
-                                null=True, blank=True)
+    user = models.OneToOneField(
+        User,
+        verbose_name='Пользователь',
+        on_delete=models.CASCADE,
+        default='',
+        null=True,
+        blank=True,
+    )
 
     date_of_birth = models.DateField(verbose_name='Дата рождения', null=True, blank=True)
     sex = models.CharField(verbose_name='Пол', choices=SEX, max_length=30, default=M, blank=True)
@@ -39,8 +45,12 @@ class Profile(AbstarctBaseModel):
     website = models.URLField(verbose_name='Сайт', blank=True, null=True)
     social_account = models.URLField(verbose_name='Ссылка на аккаунт в соц. сетях', blank=True, null=True)
     occupation = models.URLField(verbose_name='Профессия', blank=True, null=True)
-    fca_token = models.CharField(verbose_name='Токен для отправки уведомления через Firebase', max_length=200,
-                                 null=True, blank=True)
+    fca_token = models.CharField(
+        verbose_name='Токен для отправки уведомления через Firebase',
+        max_length=200,
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         verbose_name = 'Профиль пользователя'
@@ -110,8 +120,13 @@ class Subtask(AbstarctBaseModel):
     task = models.ForeignKey(Task, verbose_name='Задача', on_delete=models.CASCADE, null=True)
 
     name = models.CharField(verbose_name='Название', max_length=300, blank=True, null=True)
-    status = models.CharField(verbose_name='Статус', choices=Task.STATUS, max_length=30, default=Task.IN_PROGRESS,
-                              blank=True)
+    status = models.CharField(
+        verbose_name='Статус',
+        choices=Task.STATUS,
+        max_length=30,
+        default=Task.IN_PROGRESS,
+        blank=True,
+    )
 
     class Meta:
         verbose_name = 'Подзадача'
@@ -126,8 +141,13 @@ class TaskLog(AbstarctBaseModel):
 
     task = models.ForeignKey(Task, verbose_name='Задача', on_delete=models.CASCADE, null=True)
 
-    status = models.CharField(verbose_name='Статус', choices=Task.STATUS, max_length=30, default=Task.IN_PROGRESS,
-                              blank=True)
+    status = models.CharField(
+        verbose_name='Статус',
+        choices=Task.STATUS,
+        max_length=30,
+        default=Task.IN_PROGRESS,
+        blank=True,
+    )
 
     class Meta:
         verbose_name = 'Изменение задачи'

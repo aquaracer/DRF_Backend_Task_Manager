@@ -1,25 +1,25 @@
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
-from notifications.services import create_periodic_task
 
 from .models import Task, Subtask, TaskLog
 from notifications.models import Notification
 from notifications.serializers import NotificationSerializer
+from notifications.services import create_periodic_task
+
 
 class SubtaskSerializer(serializers.ModelSerializer):
     """Подзадача"""
 
     class Meta:
         model = Subtask
-        fields = ('id', 'name', 'status')
+        fields = ('id', 'name', 'status',)
 
 
 class CreateSubtaskSerializer(serializers.ModelSerializer):
-    """Создание подзадачи"""
+    """Создать подзадачу"""
 
     class Meta:
         model = Subtask
-        fields = ('name', 'status', 'task_id')
+        fields = ('name', 'status', 'task_id',)
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -79,18 +79,19 @@ class UpdateTaskSerializer(serializers.ModelSerializer):
         exclude = ('user', 'created', 'last_updated',)
 
     def update(self, instance, validated_data):
-     
+        # если обновляем имя в задаче, то и обновляем и имя в уведомлении
         if validated_data.get('name') and validated_data.get('name') != instance.name:
             Notification.objects.filter(task=instance).update(name=validated_data.get('name'))
 
+        # если обновился статус
         if validated_data.get('status') and validated_data.get('status') != instance.status:
             TaskLog.objects.create(task=instance, status=instance.status)
 
-        instance = super(UpdateTaskSerializer, self).update(instance, validated_data)
-        return instance
+        return super(UpdateTaskSerializer, self).update(instance, validated_data)
 
 
 class GoogleAuthSerializer(serializers.Serializer):
-    """ Сериализация данных от Google"""
+    """Сериализация данных от Google"""
+
     email = serializers.EmailField()
     token = serializers.CharField()

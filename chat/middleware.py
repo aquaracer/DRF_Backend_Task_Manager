@@ -1,25 +1,27 @@
-import os, django, jwt
+import django, jwt, os
 from datetime import datetime
-from channels.auth import AuthMiddlewareStack
 from django.conf import settings
 from django.contrib.auth.models import AnonymousUser, User
+from django.db import close_old_connections
 from channels.db import database_sync_to_async
 from channels.middleware import BaseMiddleware
-from django.db import close_old_connections
 
+ALGORITHM = "HS256"
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
-ALGORITHM = "HS256"
 
 @database_sync_to_async
 def get_user(token):
+    """Получение обьекта пользователя"""
+
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=ALGORITHM)
     except:
         return AnonymousUser()
 
     token_exp = datetime.fromtimestamp(payload['exp'])
+
     if token_exp < datetime.utcnow():
         return AnonymousUser()
 

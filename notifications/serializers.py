@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from notifications.services import create_periodic_task
 
 from .models import Notification
+from notifications.services import create_periodic_task
 
 
 class NotificationSerializer(serializers.ModelSerializer):
@@ -17,7 +17,7 @@ class CreateNotificationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Notification
-        fields = ('task', 'name', 'launch_time')
+        fields = ('task', 'name', 'launch_time',)
 
     def create(self, validated_data):
         instance_notification = super(CreateNotificationSerializer, self).create(validated_data)
@@ -29,6 +29,4 @@ class UpdateNotificationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Notification
-        fields = ('name', 'launch_time')
-
-
+        fields = ('name', 'launch_time',)

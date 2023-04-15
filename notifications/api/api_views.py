@@ -7,18 +7,29 @@ from notifications.serializers import NotificationSerializer, CreateNotification
 from notifications.models import Notification
 from task_manager.swagger_schema import TOKENS_PARAMETER
 
-@method_decorator(name='create',
-                  decorator=swagger_auto_schema(
-                      tags=['notification'],
-                      operation_description='Создание уведомления', **TOKENS_PARAMETER))
-@method_decorator(name='partial_update',
-                  decorator=swagger_auto_schema(
-                      tags=['notification'],
-                      operation_description='Изменение уведомления', ))
-@method_decorator(name='destroy',
-                  decorator=swagger_auto_schema(
-                      tags=['notification'],
-                      operation_description='Удаление уведомления', ))
+
+@method_decorator(
+    name='create',
+    decorator=swagger_auto_schema(
+        tags=['notification'],
+        operation_description='Создание уведомления',
+        **TOKENS_PARAMETER,
+    ),
+)
+@method_decorator(
+    name='partial_update',
+    decorator=swagger_auto_schema(
+        tags=['notification'],
+        operation_description='Изменение уведомления',
+    ),
+)
+@method_decorator(
+    name='destroy',
+    decorator=swagger_auto_schema(
+        tags=['notification'],
+        operation_description='Удаление уведомления',
+    ),
+)
 class NotificationViewSet(ModelViewSet):
     """CRUD Уведомления"""
 

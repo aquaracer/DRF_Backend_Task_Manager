@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -45,20 +45,21 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'channels',
+
     'core',
     'notifications',
-    'chat'
+    'chat',
 ]
 
 
 RABBITMQ = {
     'default': {
-        'HOST': 'localhost',
-        'PORT': 15672,
-        'VIRTUAL_HOST': '/',
+        'HOST': os.getenv("RABBITMQ_HOST"),
+        'PORT': os.getenv("RABBITMQ_PORT"),
+        'VIRTUAL_HOST': os.getenv("RABBITMQ_VIRTUAL_HOST"),
         'USER': os.getenv('RABBITMQ_USER'),
         'PASSWORD': os.getenv('RABBITMQ_PASSWORD'),
-        'QUEUE': 'queue'
+        'QUEUE': os.getenv("RABBITMQ_QUEUE"),
     }
 }
 
@@ -77,8 +78,7 @@ ROOT_URLCONF = 'task_manager.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

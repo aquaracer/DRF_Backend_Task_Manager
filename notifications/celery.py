@@ -1,6 +1,6 @@
 import os
 from celery import Celery
-from celery.schedules import crontab
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'task_manager.settings')
 
@@ -11,10 +11,8 @@ app.conf.update(
     {
         'task_routes': {
             'send_push': {'queue': 'send_push'},
-            'update_exchange_rates': {'queue': 'update_exchange_rates'},
         }
     }
 )
 
 app.autodiscover_tasks()
-
