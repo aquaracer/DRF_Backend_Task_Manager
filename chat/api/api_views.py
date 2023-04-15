@@ -4,8 +4,8 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.permissions import IsAuthenticated
-from task_manager.swagger_schema import TOKENS_PARAMETER
 
+from task_manager.swagger_schema import TOKENS_PARAMETER
 from chat.models import Room
 from chat.serializers import CreateRoomSerializer
 
