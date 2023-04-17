@@ -35,7 +35,6 @@ services:
 
   celery:
     build: .
-#    command: celery -A notifications worker -l info -Q send_push
     command: celery -A notifications worker --beat --scheduler django --loglevel=info -Q send_push
     volumes:
       - .:/core
@@ -46,13 +45,13 @@ services:
     links:
       - rabbitmq
     restart: on-failure
-#
-#  redis:
-#    restart: unless-stopped
-#    image: redis:7.0.5-alpine
-#    container_name : redis
-#    expose:
-#      - 6379
+
+  redis:
+    restart: unless-stopped
+    image: redis:7.0.5-alpine
+    container_name : redis
+    expose:
+      - 6379
 
 volumes:
   pgdata:

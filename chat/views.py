@@ -10,5 +10,5 @@ def room(request, pk):
         'chat/room.html',
         {
             "room": room,
-        }
+        },
     )

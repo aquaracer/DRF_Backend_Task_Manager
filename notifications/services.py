@@ -1,8 +1,10 @@
 import json
 from django_celery_beat.models import PeriodicTask, ClockedSchedule
 
+from .models import Notification
 
-def create_periodic_task(notification):
+
+def create_periodic_task(notification: Notification) -> None:
     """Создание задачи на выполнение по таймеру"""
 
     clocked = ClockedSchedule.objects.create(clocked_time=notification.launch_time)
@@ -16,7 +18,7 @@ def create_periodic_task(notification):
             {
                 'message_body': 'notification.name',
                 'fca_token': 'fca_token',
-                'notification_id': notification.id
-            }
-        )
+                'notification_id': notification.id,
+            },
+        ),
     )
